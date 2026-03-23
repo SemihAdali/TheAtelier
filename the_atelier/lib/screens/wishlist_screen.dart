@@ -44,6 +44,24 @@ class _WishlistScreenState extends State<WishlistScreen> {
     }
   }
 
+  /// Parses price strings from shops — handles European comma-decimal
+  /// (99,95 → 99.95), dot-decimal (99.95), and thousands separators
+  /// (1.299,00 → 1299.00, 1,299.00 → 1299.00).
+  static double? _parsePrice(String raw) {
+    final s = raw.trim();
+    if (s.isEmpty) return null;
+    // European: ends with comma + 2 digits → decimal comma
+    if (RegExp(r'[0-9],[0-9]{2}$').hasMatch(s)) {
+      return double.tryParse(s.replaceAll('.', '').replaceAll(',', '.').replaceAll(RegExp(r'[^0-9.]'), ''));
+    }
+    // US / standard: ends with dot + 2 digits → decimal dot
+    if (RegExp(r'[0-9]\.[0-9]{2}$').hasMatch(s)) {
+      return double.tryParse(s.replaceAll(',', '').replaceAll(RegExp(r'[^0-9.]'), ''));
+    }
+    // Fallback: strip everything except digits and dot
+    return double.tryParse(s.replaceAll(RegExp(r'[^0-9.]'), ''));
+  }
+
   Future<void> _discernProduct() async {
     final url = _urlController.text.trim();
     if (url.isEmpty) return;
@@ -74,7 +92,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
        if (result['brand'] != null) data['brand'] = result['brand'];
        if (result['currency'] != null) data['currency'] = result['currency'];
        if (result['price'] != null) {
-          data['price'] = double.tryParse(result['price'].toString().replaceAll(RegExp(r'[^0-9.]'), ''));
+          data['price'] = _parsePrice(result['price'].toString());
        }
     }
 
