@@ -130,7 +130,7 @@ class _WishlistItemDetailScreenState extends State<WishlistItemDetailScreen> {
         decoration: InputDecoration(
           labelText: label,
           filled: _isEditing,
-          fillColor: _isEditing ? Theme.of(context).colorScheme.surfaceContainerHighest : Colors.transparent,
+          fillColor: _isEditing ? Theme.of(context).colorScheme.surfaceVariant : Colors.transparent,
           border: _isEditing ? OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none) : UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.outlineVariant)),
           disabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.outlineVariant)),
         ),

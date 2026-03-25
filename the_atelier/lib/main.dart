@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'services/storage_service.dart';
 import 'theme/app_theme.dart';
 import 'screens/auth_gate.dart';
+import 'models/outfit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await StorageService.init();
+  
+  // Load persisted outfits into the global cache
+  mockOutfits = StorageService.instance.getOutfits();
 
   await Supabase.initialize(
     url: 'https://smvlqyycshkgmrmxtxyj.supabase.co',

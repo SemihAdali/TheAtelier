@@ -261,7 +261,7 @@ class _AddItemScreenState extends State<AddItemScreen> {
                   decoration: BoxDecoration(
                     color: Theme.of(
                       context,
-                    ).colorScheme.surfaceContainerHighest,
+                    ).colorScheme.surfaceVariant,
                     borderRadius: BorderRadius.circular(8),
                     image: _imageFile != null
                         ? DecorationImage(

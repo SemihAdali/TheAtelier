@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'wardrobe_screen.dart';
-import 'wishlist_screen.dart'; // We will create this next
+import 'wishlist_screen.dart';
+import 'outfit_designer_screen.dart';
+import 'travel_planner_screen.dart';
+import 'profile_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -15,45 +18,159 @@ class _MainScreenState extends State<MainScreen> {
   final List<Widget> _screens = [
     const WardrobeScreen(),
     const WishlistScreen(),
+    const OutfitDesignerScreen(),
+    const TravelPlannerScreen(),
+    const ProfileScreen(),
   ];
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final cs = theme.colorScheme;
+
     return Scaffold(
-      body: _screens[_currentIndex],
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.05),
-              blurRadius: 10,
-              offset: const Offset(0, -4),
-            ),
-          ],
+      backgroundColor: cs.surface,
+      appBar: AppBar(
+        title: Text(
+          'THE ATELIER',
+          style: TextStyle(
+            color: cs.onSurface,
+            fontWeight: FontWeight.w900,
+            letterSpacing: 2,
+          ),
         ),
-        child: NavigationBar(
-          selectedIndex: _currentIndex,
-          onDestinationSelected: (index) {
-            setState(() {
-              _currentIndex = index;
-            });
-          },
-          backgroundColor: Colors.transparent,
-          indicatorColor: Theme.of(context).colorScheme.primaryContainer.withOpacity(0.4),
-          destinations: const [
-            NavigationDestination(
-              icon: Icon(Icons.checkroom_outlined),
-              selectedIcon: Icon(Icons.checkroom),
-              label: 'Wardrobe',
+        centerTitle: true,
+        backgroundColor: Colors.transparent,
+        scrolledUnderElevation: 0,
+        elevation: 0,
+      ),
+      body: Stack(
+        children: [
+          // The current screen
+          _screens[_currentIndex],
+          
+          // Floating Bottom Navigation Bar
+          Positioned(
+            left: 20,
+            right: 20,
+            bottom: 24,
+            child: Container(
+              height: 64,
+              decoration: BoxDecoration(
+                color: cs.surfaceVariant.withOpacity(0.95),
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.08),
+                    blurRadius: 24,
+                    offset: const Offset(0, 8),
+                  ),
+                ],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _NavBarItem(
+                      icon: Icons.checkroom_outlined,
+                      activeIcon: Icons.checkroom,
+                      label: 'WARDROBE',
+                      isSelected: _currentIndex == 0,
+                      onTap: () => setState(() => _currentIndex = 0),
+                      theme: theme,
+                      cs: cs,
+                    ),
+                    _NavBarItem(
+                      icon: Icons.favorite_border,
+                      activeIcon: Icons.favorite,
+                      label: 'WISHLIST',
+                      isSelected: _currentIndex == 1,
+                      onTap: () => setState(() => _currentIndex = 1),
+                      theme: theme,
+                      cs: cs,
+                    ),
+                    _NavBarItem(
+                      icon: Icons.style_outlined,
+                      activeIcon: Icons.style,
+                      label: 'DESIGNER',
+                      isSelected: _currentIndex == 2,
+                      onTap: () => setState(() => _currentIndex = 2),
+                      theme: theme,
+                      cs: cs,
+                    ),
+                    _NavBarItem(
+                      icon: Icons.card_travel_outlined,
+                      activeIcon: Icons.card_travel,
+                      label: 'TRIPS',
+                      isSelected: _currentIndex == 3,
+                      onTap: () => setState(() => _currentIndex = 3),
+                      theme: theme,
+                      cs: cs,
+                    ),
+                    _NavBarItem(
+                      icon: Icons.person_outline,
+                      activeIcon: Icons.person,
+                      label: 'PROFILE',
+                      isSelected: _currentIndex == 4,
+                      onTap: () => setState(() => _currentIndex = 4),
+                      theme: theme,
+                      cs: cs,
+                    ),
+                  ],
+                ),
+              ),
             ),
-            NavigationDestination(
-              icon: Icon(Icons.favorite_border),
-              selectedIcon: Icon(Icons.favorite),
-              label: 'Wishlist',
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _NavBarItem extends StatelessWidget {
+  final IconData icon;
+  final IconData activeIcon;
+  final String label;
+  final bool isSelected;
+  final VoidCallback onTap;
+  final ThemeData theme;
+  final ColorScheme cs;
+
+  const _NavBarItem({
+    required this.icon,
+    required this.activeIcon,
+    required this.label,
+    required this.isSelected,
+    required this.onTap,
+    required this.theme,
+    required this.cs,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      behavior: HitTestBehavior.opaque,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            isSelected ? activeIcon : icon,
+            color: isSelected ? cs.primary : cs.onSurface.withOpacity(0.5),
+            size: 20, // Reduced slightly for 5 items
+          ),
+          const SizedBox(height: 4),
+          Text(
+            label,
+            style: theme.textTheme.labelSmall?.copyWith(
+              fontSize: 7, // Reduced for 5 items
+              letterSpacing: 1.0,
+              fontWeight: isSelected ? FontWeight.w800 : FontWeight.w600,
+              color: isSelected ? cs.primary : cs.onSurface.withOpacity(0.5),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

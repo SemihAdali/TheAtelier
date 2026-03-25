@@ -167,7 +167,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                       runSpacing: 8.0,
                       children: _currentItem.tags.map((tag) => Chip(
                         label: Text('#$tag'),
-                        backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
+                        backgroundColor: Theme.of(context).colorScheme.surface,
                         side: BorderSide.none,
                       )).toList(),
                     ),

@@ -80,7 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
               // Email Field
               Container(
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                  color: Theme.of(context).colorScheme.surfaceVariant,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: TextField(
@@ -98,7 +98,7 @@ class _LoginScreenState extends State<LoginScreen> {
               // Password Field
               Container(
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                  color: Theme.of(context).colorScheme.surfaceVariant,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: TextField(
